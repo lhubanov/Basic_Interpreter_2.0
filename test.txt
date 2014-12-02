@@ -1,0 +1,9 @@
+10 PRINT Ladies and gentlemen- Dave!
+20 PRINT *Dave does some magic tricks*
+30 PRINT *Card tricks!*
+40 PRINT *Disappearance and reappearance!*
+50 PRINT *Slicing someone in half!*
+60 PRINT *Explosions!*
+77 PRINT *I am getting kind of bored, actually.*
+80 ENDIF
+90 PRINT HEYYAA
