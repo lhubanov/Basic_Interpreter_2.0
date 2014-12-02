@@ -1,8 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <map>
 #include "database.h"
 
 int trace = 0;
