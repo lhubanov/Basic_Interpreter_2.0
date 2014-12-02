@@ -4,22 +4,18 @@
 #include <sstream>
 #include <string>
 #include <map>
+#include <cstdlib>
 
-//int trace = 1;
 
 class STL_Map {
 protected:
 	//maps; could be protected also; doesn't matter?
-	//also, variables map
+
 	std::map < int, int >			Ctr_to_Inst;
 	std::map < int, std::string >	Inst_to_Func;
 	std::map < int, std::string >	Inst_to_Data;
 	std::map < std::string, int >	variables;
 
-	//tests
-	/*std::map < int, int >			test_Ctr_to_Inst;
-	std::map < int, std::string >	test_Inst_to_Func;
-	std::map < int, std::string >	test_Inst_to_Data;*/
 
 public:
 	//constructors and destructors
@@ -37,16 +33,14 @@ public:
 
 	//Functions to read the maps
 
-	//	std::string Get_Func_by_Inst(int key, std::string contents);	//should return the Func - a String?
-	//	std::string Get_Data_by_Inst(int key, std::string contents);	//should return the Data - a String?
+	//TODO: make more general for checking the size all of the maps in the STL_Map class
+	int Get_Size_of_Ctr_to_Inst();			
+	int Get_Ctr_by_Inst(int Inst);
 
-	int Get_Size_of_Ctr_to_Inst();			//map.size() ; other&?
-	int Get_Ctr_by_Inst(int Inst);			//map.find()
-	int Get_Inst_by_Ctr(int Ctr);
+	int			Get_Inst_by_Ctr(int Ctr);
+	std::string Get_Func_by_Inst(int Inst);	//should return the Func - a String?
+	std::string Get_Data_by_Inst(int Inst);	//should return the Data - a String?
 
-	//function, which containts a for loop, which reads map entries, starting from an 'IF' call
-	//until it reads an 'ENDIF' as a Func/Data, corresponting to an Inst number
-	//return Inst_number
 	int Find_Next_Endif(int Inst);	
 
 
@@ -74,7 +68,6 @@ public:
 	~Database(); //destructor
 
 	//operations
-	//void read_file(); //should probably be built-in the custom constructor
 	void sort_file_to_map(std::ifstream& other, STL_Map& map); //maybe redundant, considering we have read_file
 	//void evaluate_command(); //should take string command? discuss with others
 };
