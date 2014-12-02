@@ -1,6 +1,6 @@
 #include "database.h"
 
-int trace = 0;
+int trace = 1;
 
 Database::Database()
 {
@@ -25,9 +25,6 @@ Database::Database(std::ifstream& other)
 
 	int testingIf;
 	testingIf = test_map.Find_Next_Endif(test_map.Get_Ctr_by_Inst(30));
-
-	std::cout << "testing if, ENDIF on: " << testingIf << std::endl;
-
 }
 
 Database::~Database()
@@ -42,7 +39,7 @@ Database::~Database()
 
 void Database::sort_file_to_map(std::ifstream& other, STL_Map& map)
 {
-	i = 0;//description
+	i = 0;//description of what is i or just rename it :D
 
 	while (true)
 	{
@@ -146,6 +143,20 @@ void STL_Map::Set_Data_by_Inst(int key, std::string contents)
 		std::cout << "Map Set_Data_by_Inst called" << std::endl;
 }
 
+//Variables map
+void STL_Map::Set_Variable(std::string key, int contents)
+{
+	variables[key] = contents;
+
+	if (trace)
+		std::cout << "Map Set_Variables called" << std::endl;
+	std::cout << variables[key] << std::endl;
+}
+
+/******************************************
+MAP GET AND DISPLAY FUNCTIONS
+******************************************/
+
 void STL_Map::Print_map()
 {
 	if (trace)
@@ -165,91 +176,93 @@ void STL_Map::Print_map()
 	}
 }
 
-//int Get_Inst_by_Ctr(int key, int contents);
-//std::string Get_Func_by_Inst(int key, std::string contents);
-//std::string Get_Data_by_Inst(int key, std::string contents);
-
-//Variables map
-void STL_Map:: Set_Variable(std::string key, int contents)
-{
-	variables[key] = contents;
-
-	if (trace)
-		std::cout << "Map Set_Variables called" << std::endl;
-		std::cout << variables[key] << std::endl;
-}
-
-//TODO: Template these
+//TODO: Template this function
 int STL_Map::Get_Size_of_Ctr_to_Inst ()
 {
 	if (trace)
-		std::cout << "Map Get_Size_of_Ctr_to_Inst called" << std::endl;
+		std::cout << "Map Get_Size_of_Ctr_to_Inst called: " << Ctr_to_Inst.size() << std::endl;
 
 	return Ctr_to_Inst.size();
 }
 
 
-//Template or reference?
+//Template or reference, so that this could be done in the other maps as well?
 int STL_Map::Get_Ctr_by_Inst(int Inst)
 {
-	int sizesize = Get_Size_of_Ctr_to_Inst();
+	int length = Get_Size_of_Ctr_to_Inst(); // size of map of ctrs
 	
-	for (int j(0); j <= sizesize; j++)
+	for (int j(0); j <= length; j++)
 	{
 		if (Ctr_to_Inst[j] == Inst)
 		{
 			if (trace)
-				std::cout << "Map Found Ctr by Inst" << std::endl;
-		
-			std::cout << "return i, data is " << Ctr_to_Inst[j] << std::endl;
+				std::cout << "Map Found a Ctr corresponding to the given Inst: " << j << std::endl;
+
 			return j;
 		}	
 	}
 
 	if (trace)
-		std::cout << "Map Did not find Ctr by Inst, ERROR" << std::endl;
+		std::cout << "ERROR: Map Did not find the given Inst in the Ctr map" << std::endl;
 	
 	return Get_Size_of_Ctr_to_Inst();	
 }
 
 
-int STL_Map::Find_Next_Endif(int Inst)
+int STL_Map::Find_Next_Endif(int Ctr)
 {
 
-	int size1 = Get_Size_of_Ctr_to_Inst(); //perhaps make this -1 (do test)
-	int size2 = Get_Inst_by_Ctr(size1-1);
-	std::cout << size1 << " " << size2 << std::endl;
+	int size_Ctrs = Get_Size_of_Ctr_to_Inst(); //perhaps make this -1 (do test)
+	int last_Inst = Get_Inst_by_Ctr(size_Ctrs-1);
 
-	int Counter = Inst;
-	int IteratorInstruction = Get_Inst_by_Ctr(Counter);
-
-	std::cout << IteratorInstruction << std::endl;
-	std::cout << Counter << std::endl;	
+	int Ctr_It = Ctr;
+	int Inst_It = Get_Inst_by_Ctr(Ctr_It);
 	
-	for (IteratorInstruction; IteratorInstruction <= size2;  )
+	for (Inst_It; Inst_It <= last_Inst;  )
 	{
-		std::cout << Inst_to_Func[IteratorInstruction] << std::endl;
-		std::cout << "The iterator value: " << Counter << "Instruction is: " << IteratorInstruction << std::endl;
-		if (Inst_to_Func[IteratorInstruction] ==  "ENDIF")
+		if (Inst_to_Func[Inst_It] ==  "ENDIF")
 		{
 			if (trace)
-				std::cout << "Map Found Ctr by Inst" << std::endl;
+				std::cout << "Map Found an ENDIF on: " << Ctr_It << std::endl;
 
-			//std::cout << "return counter, data is " << Inst_to_Func[counter] << std::endl;
-			return Counter; //return counter OR Instruction
+			return Ctr_It;
 		}
 
-		Counter++;
-		IteratorInstruction = Get_Inst_by_Ctr(Counter);
+		Ctr_It++;
+		Inst_It = Get_Inst_by_Ctr(Ctr_It);
 	}
 
 	if (trace)
-		std::cout << "Map Did not find Ctr by Inst, ERROR" << std::endl;
+		std::cout << "ERROR: Could not find an ENDIF" << std::endl;
+	//Cause cataclysms
 
-	return Get_Size_of_Ctr_to_Inst(); //throw error / else return last counter.
+	return Get_Size_of_Ctr_to_Inst();
 }
+
+//**********************************
+//'GET' FUNCTIONS
+//**********************************
 
 int STL_Map::Get_Inst_by_Ctr(int Ctr)
 {
+	if (trace)
+		std::cout << "Map Get_Inst_by_Ctr: " << Ctr_to_Inst[Ctr] << std::endl;
+
 	return Ctr_to_Inst[Ctr];
+}
+
+std::string STL_Map::Get_Func_by_Inst(int Inst)
+{
+	if (trace)
+		std::cout << "Map Get_Func_by_Inst: " << Inst_to_Func[Inst] << std::endl;
+
+	return Inst_to_Func[Inst];
+}
+
+std::string STL_Map::Get_Data_by_Inst(int Inst)
+{
+	if (trace)
+		std::cout << "Map Get_Data_by_Inst: " << Inst_to_Data[Inst] << std::endl;
+
+	return Inst_to_Data[Inst];
 }
