@@ -6,6 +6,8 @@
 #include <map>
 #include <cstdlib>
 
+#include "GoTo.h"
+#include "ifclass.h"
 
 class STL_Map {
 protected:
