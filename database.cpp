@@ -1,6 +1,7 @@
 #include "database.h"
 
-int trace = 1;
+
+int trace = 0;
 
 Database::Database()
 {
@@ -17,11 +18,46 @@ Database::Database(std::ifstream& other)
 	
 	STL_Map test_map;		//is this how you call a default constructor?
 	sort_file_to_map(other, test_map);
-
+	
+	//the map populated with data. 
+	
 	test_map.Print_map();
+
+	//create a loop to traverse through the map:
+	int MapSize = test_map.Get_Size_of_Ctr_to_Inst();
+	
+	
+	std::string MapData = "";
+	std::string MapFunc = "";
+	std::string MapInst = "";
+	int CurrentInstruction = 0;
+	
+	std::cout << "\n\nStarting going through the file\n" << std::endl;
+	
+	for (int iterator(0); iterator< MapSize-1; iterator++)
+	{
+		CurrentInstruction = test_map.Get_Inst_by_Ctr(iterator);
+		
+		MapData = test_map.Get_Data_by_Inst(CurrentInstruction);
+		MapFunc = test_map.Get_Func_by_Inst(CurrentInstruction);
+		std::cout << "current iterator: " << iterator << "instruction number: " << CurrentInstruction << std::endl;
+		if(MapFunc == "GOTO")
+		{
+			GoTo Goto(test_map, MapData);
+			
+			iterator = Goto.GetIterator() -1;
+		}
+		if(MapFunc == "IF")
+		{
+			ifclass evIf(test_map, MapData);
+		}
+	}
+
 
 	test_size = test_map.Get_Size_of_Ctr_to_Inst();
 	int cntr = test_map.Get_Ctr_by_Inst(40);
+	
+	
 
 	int testingIf;
 	testingIf = test_map.Find_Next_Endif(test_map.Get_Ctr_by_Inst(30));
