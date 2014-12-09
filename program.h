@@ -1,5 +1,5 @@
-//#ifndef DATABASE_H_
-//#define DATABASE_H_
+#ifndef DATABASE_H_
+#define DATABASE_H_
 
 //contains declarations
 #include <iostream>
@@ -11,9 +11,11 @@
 
 #include "node.h"
 #include "print.h"
+#include "input.h"
+#include "goto.h"
+#include "let.h"
 
-
-class Node;
+//class Node;
 
 class Program {
 	
@@ -39,7 +41,7 @@ class Program {
 		
 	static std::map < int, Node* > program_map;
 	static std::map < std::string, int > variable_map;
-
+	static std::map <int, Node*>::iterator iterator_map;
 
 	friend std::istream& operator>> (std::istream& in, Program& p);
 	
@@ -48,6 +50,4 @@ class Program {
 	void Print_map();
 };
 
-//#endif
-
-
+#endif
