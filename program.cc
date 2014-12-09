@@ -2,6 +2,7 @@
 
 std::map < int, Node* > Program::program_map;
 std::map < std::string, int > Program::variable_map;
+std::map < int, Node* >::iterator Program::iterator_map;
 
 int trace = 1;
 
@@ -43,6 +44,8 @@ std::istream& operator >> (std::istream& in, Program& p)
 
 	while (true)
 	{
+		//TODO:CHECK IF READING OF DATA IGNORES WHITE SPACES
+		
 		//break if eof
 		//Note: still doesn't break on time and creates one more instance in the map
 		if (in.eof()) break;
@@ -111,6 +114,20 @@ std::istream& operator >> (std::istream& in, Program& p)
 		{
 			p.program_map[temp_Inst] = new Input(temp_Inst, temp_Func, temp_Data);
 		}
+		
+		if(temp_Func == "GOTO")
+		{
+			p.program_map[temp_Inst] = new Goto(temp_Inst, temp_Func, temp_Data);
+		}
+		
+		if(temp_Func == "LET")
+		{
+			p.program_map[temp_Inst] = new Let(temp_Inst, temp_Func, temp_Data);
+		}
+		
+		temp_Inst = 0;
+		temp_Func.clear();
+		temp_Data.clear();
 
 	};
 
@@ -122,8 +139,33 @@ void Program::Run()
 		std::cout << "Calling Program Run" << std::endl;
 		
 	//Node test_p (1,"2","3");
-	//test_p = &program_map[10];	
-	program_map[10]->Execute(program_map, variable_map);
+	//test_p = &program_map[10];
+		
+	iterator_map = program_map.begin();
+
+	program_map[10]->Execute(program_map, variable_map, iterator_map);
+	
+	program_map[35]->Execute(program_map, variable_map, iterator_map);
+	
+	std::cout << "me happy" << std::endl;
+	
+	
+	
+	program_map[51]->Execute(program_map, variable_map, iterator_map);
+	
+	program_map[52]->Execute(program_map, variable_map, iterator_map);
+	
+	program_map[53]->Execute(program_map, variable_map, iterator_map);
+	
+	std::cout << "finished LET" << std::endl;
+	
+	program_map[55]->Execute(program_map, variable_map, iterator_map);
+	
+	
+	std::cout << iterator_map->first << std::endl;
+	
+	program_map[iterator_map->first]->Execute(program_map, variable_map, iterator_map);
+
 }
 
 
@@ -157,12 +199,5 @@ void Program::Print_map()
 		std::cout << it->first << " " << it->second;
 		
 		std::cout << "\n";
-	}
-	
-	
-	
+	}	
 }
-
-
-
-
