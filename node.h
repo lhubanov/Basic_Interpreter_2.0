@@ -15,7 +15,7 @@ class Node {
 		
 		Node(int i, std::string f, std::string d):Instruction(i), Function(f), Data(d){};
 		
-		virtual void Execute(std::map<int, Node*> m, std::map<std::string, int> v) = 0;
+		virtual void Execute(std::map<int, Node*> m, std::map<std::string, int> &v, std::map<int, Node*>::iterator &i) = 0;
 		
 	
 	protected: 
