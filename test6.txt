@@ -1,0 +1,7 @@
+10 PRINT "testing If function:\n"
+15 LET A=3
+16 LET B=4
+20 IF A=3
+30 PRINT B
+40 PRINT "\n"
+50 ENDIF
