@@ -45,10 +45,6 @@ int main(int argc, char* argv[])
 		{
 			std::cerr << "\nEncountered an error reading file:" << std::endl;
 			e.PrintMyException();
-
-			//std::cout << argc << std::endl;
-			//std::cout << argv[1] << std::endl;
-			//system("pause");
 			exit(0);
 		}
 		
